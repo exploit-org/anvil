@@ -1,0 +1,19 @@
+dependencies {
+    api project(':ecc-spi')
+    api project(':bigint')
+    api project(':zk-dlog')
+    implementation project(':util')
+
+    implementation "org.bouncycastle:bcprov-jdk18on:${rootProject.ext.bouncyCastleVersion}"
+
+    compileOnly "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+
+    testImplementation project(':ecc-secp256k1')
+    testImplementation project(':ecc-p256')
+    testImplementation project(':bigint')
+    testImplementation project(':shamir')
+    testImplementation rootProject.ext.tss4jNative('linux-amd64')
+    testImplementation rootProject.ext.tss4jNative('macos-aarch64')
+    testImplementation rootProject.ext.tss4jNative('windows-amd64')
+}

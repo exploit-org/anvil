@@ -1,0 +1,22 @@
+dependencies {
+    api project(':ecc-spi')
+    api project(':bigint')
+
+    implementation project(':util')
+    implementation "com.google.guava:guava:${rootProject.ext.guavaVersion}"
+
+    compileOnly "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+
+    testImplementation project(':ecc-ed25519')
+    testImplementation project(':ecc-p256')
+    testImplementation project(':ecc-secp256k1')
+    testImplementation project(':bigint')
+    testImplementation project(':t-schnorr:frost-ed25519')
+    testImplementation project(':t-schnorr:frost-secp256k1')
+    testImplementation project(':t-schnorr:frost-p256')
+    testImplementation project(':shamir')
+    testImplementation rootProject.ext.tss4jNative('linux-amd64')
+    testImplementation rootProject.ext.tss4jNative('macos-aarch64')
+    testImplementation rootProject.ext.tss4jNative('windows-amd64')
+}

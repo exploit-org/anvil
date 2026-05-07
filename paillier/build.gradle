@@ -1,0 +1,12 @@
+dependencies {
+    api project(':bigint')
+    api project(':ecc-spi')
+
+    implementation project(':util')
+    implementation project(':zk-spi')
+
+    testImplementation project(':ecc-secp256k1')
+    testImplementation rootProject.ext.tss4jNative('linux-amd64')
+    testImplementation rootProject.ext.tss4jNative('macos-aarch64')
+    testImplementation rootProject.ext.tss4jNative('windows-amd64')
+}

@@ -1,0 +1,329 @@
+plugins {
+    id 'base'
+    id 'tech.yanand.maven-central-publish' version '1.2.0' apply false
+}
+
+group = 'org.exploit.anvil'
+version = findProperty('releaseVersion') ?: '0.1.0'
+
+ext {
+    anvilJavaProjects = [
+            ':bigint',
+            ':util',
+            ':ecc-spi',
+            ':ecc-secp256k1',
+            ':ecc-ed25519',
+            ':ecc-p256',
+            ':paillier',
+            ':shamir',
+            ':t-schnorr',
+            ':t-schnorr:frost-ed25519',
+            ':t-schnorr:frost-secp256k1',
+            ':t-schnorr:frost-p256',
+            ':t-ecdsa',
+            ':t-ecies',
+            ':xchacha20-poly1305',
+            ':zk-dlog',
+            ':zk-spi'
+    ]
+
+    junitVersion = '6.0.0'
+    lombokVersion = '1.18.44'
+    bouncyCastleVersion = '1.83'
+    guavaVersion = '33.4.8-jre'
+    tss4jNativesVersion = '1.0.0'
+
+    anvilPomUrl = findProperty('pomUrl') ?: 'https://github.com/exploit-org/anvil'
+    anvilScmUrl = findProperty('pomScmUrl') ?: anvilPomUrl
+    anvilScmConnection = findProperty('pomScmConnection') ?: 'scm:git:https://github.com/exploit-org/anvil.git'
+    anvilScmDeveloperConnection = findProperty('pomScmDeveloperConnection') ?: 'scm:git:ssh://github.com/exploit-org/anvil.git'
+    anvilDeveloperId = findProperty('pomDeveloperId') ?: 'xlloit'
+    anvilDeveloperName = findProperty('pomDeveloperName') ?: 'xlloit'
+    anvilDeveloperEmail = findProperty('pomDeveloperEmail') ?: 'contact@exploit.org'
+
+    anvilProjectPom = [
+            ':bigint'                    : [
+                    name       : 'Anvil BigInt',
+                    description: 'GMP-backed arbitrary precision integer primitives for Anvil.'
+            ],
+            ':util'                      : [
+                    name       : 'Anvil Util',
+                    description: 'Shared byte encoding and digest helpers for Anvil modules.'
+            ],
+            ':ecc-spi'                   : [
+                    name       : 'Anvil ECC SPI',
+                    description: 'Common elliptic-curve interfaces for Anvil curve and protocol modules.'
+            ],
+            ':ecc-secp256k1'             : [
+                    name       : 'Anvil ECC secp256k1',
+                    description: 'secp256k1 keys, point operations, ECDSA, BIP340, Taproot helpers, and hash-to-curve support.'
+            ],
+            ':ecc-ed25519'               : [
+                    name       : 'Anvil ECC Ed25519',
+                    description: 'Ed25519 keys, point operations, and EdDSA signing and verification.'
+            ],
+            ':ecc-p256'                  : [
+                    name       : 'Anvil ECC P-256',
+                    description: 'P-256 keys, point operations, ECDSA, recoverable ECDSA, and hash-to-curve support.'
+            ],
+            ':paillier'                  : [
+                    name       : 'Anvil Paillier',
+                    description: 'Paillier encryption, MtA helpers, and Paillier-related zero-knowledge proofs.'
+            ],
+            ':shamir'                    : [
+                    name       : 'Anvil Shamir',
+                    description: 'Shamir splitting and recovery for elliptic-curve private scalars.'
+            ],
+            ':t-schnorr'                 : [
+                    name       : 'Anvil Threshold Schnorr',
+                    description: 'Curve-independent FROST contexts, preprocessing, partial signing, and aggregation.'
+            ],
+            ':t-schnorr:frost-ed25519'   : [
+                    name       : 'Anvil FROST Ed25519',
+                    description: 'FROST Ed25519 scheme and SHA-512 cipher suite.'
+            ],
+            ':t-schnorr:frost-secp256k1' : [
+                    name       : 'Anvil FROST secp256k1',
+                    description: 'FROST secp256k1 schemes for Schnorr, BIP340, and Taproot signatures.'
+            ],
+            ':t-schnorr:frost-p256'      : [
+                    name       : 'Anvil FROST P-256',
+                    description: 'FROST P-256 scheme and SHA-256 cipher suite.'
+            ],
+            ':t-ecdsa'                   : [
+                    name       : 'Anvil Threshold ECDSA',
+                    description: 'GG20 threshold ECDSA contexts, MtA runners, commitments, integrity checks, and signature aggregation.'
+            ],
+            ':t-ecies'                   : [
+                    name       : 'Anvil Threshold ECIES',
+                    description: 'Threshold ECIES client, ElGamal KEM, partial decryption, and symmetric cipher adapters.'
+            ],
+            ':xchacha20-poly1305'        : [
+                    name       : 'Anvil XChaCha20-Poly1305',
+                    description: 'XChaCha20-Poly1305 AEAD wrapper over libsodium.'
+            ],
+            ':zk-dlog'                   : [
+                    name       : 'Anvil ZK DLog',
+                    description: 'Discrete-log proof utilities: Pedersen commitments, Chaum-Pedersen, and DLEQ.'
+            ],
+            ':zk-spi'                    : [
+                    name       : 'Anvil ZK SPI',
+                    description: 'Common zero-knowledge proof interfaces for Anvil proof modules.'
+            ],
+            ':bom'                       : [
+                    name       : 'Anvil BOM',
+                    description: 'Bill of materials for aligning Anvil module versions.'
+            ]
+    ]
+
+    tss4jNative = { classifier ->
+        "org.exploit:tss4j-natives:${tss4jNativesVersion}:${classifier}@jar"
+    }
+}
+
+def configurePom = { MavenPublication publication, Project p ->
+    def metadata = rootProject.ext.anvilProjectPom[p.path]
+
+    publication.pom {
+        name = metadata.name
+        description = metadata.description
+        url = rootProject.ext.anvilPomUrl
+
+        licenses {
+            license {
+                name = 'Apache License 2.0'
+                url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+
+        developers {
+            developer {
+                id = rootProject.ext.anvilDeveloperId
+                name = rootProject.ext.anvilDeveloperName
+                email = rootProject.ext.anvilDeveloperEmail
+            }
+        }
+
+        scm {
+            connection = rootProject.ext.anvilScmConnection
+            developerConnection = rootProject.ext.anvilScmDeveloperConnection
+            url = rootProject.ext.anvilScmUrl
+        }
+    }
+}
+
+allprojects {
+    group = rootProject.group
+    version = rootProject.version
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+configure(rootProject.ext.anvilJavaProjects.collect { project(it) }) {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+    apply plugin: 'tech.yanand.maven-central-publish'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(25)
+        }
+
+        withSourcesJar()
+        withJavadocJar()
+    }
+
+    dependencies {
+        testImplementation platform("org.junit:junit-bom:${rootProject.ext.junitVersion}")
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+        options.compilerArgs += '--enable-preview'
+    }
+
+    tasks.withType(Javadoc).configureEach {
+        failOnError = false
+
+        options.encoding = 'UTF-8'
+        options.addStringOption('Xdoclint:none', '-quiet')
+        options.addBooleanOption('html5', true)
+    }
+
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+        jvmArgs '--enable-preview', '--enable-native-access=ALL-UNNAMED'
+    }
+
+    tasks.withType(Jar).configureEach {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+
+    mavenCentral {
+        repoDir = rootProject.layout.buildDirectory.dir('repos/central-bundles')
+        authToken = System.getenv('CENTRAL_MAVEN_TOKEN') ?: ''
+        publishingType = 'USER_MANAGED'
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+                configurePom(delegate, project)
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'CentralBundle'
+                url = rootProject.layout.buildDirectory.dir('repos/central-bundles')
+            }
+        }
+    }
+
+    signing {
+        def signingKey = rootProject.findProperty('signingKey') ?: System.getenv('SIGNING_KEY') ?: System.getenv('GPG_PRIVATE_KEY')
+        def signingPassword = rootProject.findProperty('signingPassword') ?: System.getenv('SIGNING_PASSWORD') ?: System.getenv('GPG_PASSPHRASE')
+
+        if (signingKey) {
+            useInMemoryPgpKeys(signingKey.toString(), signingPassword?.toString())
+        }
+
+        required {
+            gradle.taskGraph.allTasks.any { task ->
+                task.name.toLowerCase(Locale.ROOT).contains('publish') ||
+                        task.name.toLowerCase(Locale.ROOT).contains('sign')
+            }
+        }
+
+        sign publishing.publications.maven
+    }
+}
+
+project(':bom') {
+    apply plugin: 'java-platform'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+    apply plugin: 'tech.yanand.maven-central-publish'
+
+    javaPlatform {
+        allowDependencies()
+    }
+
+    dependencies {
+        constraints {
+            rootProject.ext.anvilJavaProjects.each { projectPath ->
+                api project(projectPath)
+            }
+        }
+    }
+
+    mavenCentral {
+        repoDir = rootProject.layout.buildDirectory.dir('repos/central-bundles')
+        authToken = System.getenv('CENTRAL_MAVEN_TOKEN') ?: ''
+        publishingType = 'USER_MANAGED'
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.javaPlatform
+                configurePom(delegate, project)
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'CentralBundle'
+                url = rootProject.layout.buildDirectory.dir('repos/central-bundles')
+            }
+        }
+    }
+
+    signing {
+        def signingKey = rootProject.findProperty('signingKey') ?: System.getenv('SIGNING_KEY') ?: System.getenv('GPG_PRIVATE_KEY')
+        def signingPassword = rootProject.findProperty('signingPassword') ?: System.getenv('SIGNING_PASSWORD') ?: System.getenv('GPG_PASSPHRASE')
+
+        if (signingKey) {
+            useInMemoryPgpKeys(signingKey.toString(), signingPassword?.toString())
+        }
+
+        required {
+            gradle.taskGraph.allTasks.any { task ->
+                task.name.toLowerCase(Locale.ROOT).contains('publish') ||
+                        task.name.toLowerCase(Locale.ROOT).contains('sign')
+            }
+        }
+
+        sign publishing.publications.maven
+    }
+}
+
+tasks.register('publishAllToCentralBundle') {
+    group = 'publishing'
+    description = 'Publishes every Anvil publication into build/repos/central-bundles.'
+    dependsOn((rootProject.ext.anvilJavaProjects + [':bom']).collect {
+        "${it}:publishAllPublicationsToCentralBundleRepository"
+    })
+}
+
+tasks.register('publishAllToMavenCentralPortal') {
+    group = 'publishing'
+    description = 'Uploads every Anvil publication bundle to Maven Central Portal.'
+    dependsOn((rootProject.ext.anvilJavaProjects + [':bom']).collect {
+        "${it}:publishToMavenCentralPortal"
+    })
+}
+
+tasks.register('publishAllToMavenLocal') {
+    group = 'publishing'
+    description = 'Publishes every Anvil publication to the local Maven repository.'
+    dependsOn((rootProject.ext.anvilJavaProjects + [':bom']).collect {
+        "${it}:publishToMavenLocal"
+    })
+}

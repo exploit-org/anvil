@@ -1,0 +1,10 @@
+dependencies {
+    api project(':ecc-spi')
+
+    implementation project(':util')
+
+    testImplementation project(':bigint')
+    testImplementation rootProject.ext.tss4jNative('linux-amd64')
+    testImplementation rootProject.ext.tss4jNative('macos-aarch64')
+    testImplementation rootProject.ext.tss4jNative('windows-amd64')
+}

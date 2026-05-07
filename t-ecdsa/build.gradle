@@ -1,0 +1,19 @@
+dependencies {
+    api project(':ecc-spi')
+    api project(':paillier')
+    api project(':bigint')
+
+    api project(':zk-dlog')
+
+    compileOnly "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${rootProject.ext.lombokVersion}"
+
+    testImplementation project(':shamir')
+    testImplementation project(':ecc-secp256k1')
+    testImplementation project(':ecc-p256')
+    testImplementation project(':bigint')
+    testImplementation project(':util')
+    testImplementation rootProject.ext.tss4jNative('linux-amd64')
+    testImplementation rootProject.ext.tss4jNative('macos-aarch64')
+    testImplementation rootProject.ext.tss4jNative('windows-amd64')
+}
