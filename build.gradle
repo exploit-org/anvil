@@ -1,6 +1,8 @@
+import java.util.Base64
+
 plugins {
     id 'base'
-    id 'tech.yanand.maven-central-publish' version '1.2.0' apply false
+    id 'tech.yanand.maven-central-publish' version '1.2.0'
 }
 
 group = 'org.exploit.anvil'
@@ -152,6 +154,12 @@ def configurePom = { MavenPublication publication, Project p ->
     }
 }
 
+mavenCentral {
+    repoDir = layout.buildDirectory.dir('repos/central-bundles')
+    authToken = centralMavenToken
+    publishingType = 'USER_MANAGED'
+}
+
 allprojects {
     group = rootProject.group
     version = rootProject.version
@@ -165,7 +173,6 @@ configure(rootProject.ext.anvilJavaProjects.collect { project(it) }) {
     apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
-    apply plugin: 'tech.yanand.maven-central-publish'
 
     java {
         toolchain {
@@ -204,12 +211,6 @@ configure(rootProject.ext.anvilJavaProjects.collect { project(it) }) {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 
-    mavenCentral {
-        repoDir = rootProject.layout.buildDirectory.dir('repos/central-bundles')
-        authToken = System.getenv('CENTRAL_MAVEN_TOKEN') ?: ''
-        publishingType = 'USER_MANAGED'
-    }
-
     publishing {
         publications {
             maven(MavenPublication) {
@@ -227,11 +228,14 @@ configure(rootProject.ext.anvilJavaProjects.collect { project(it) }) {
     }
 
     signing {
-        def signingKey = rootProject.findProperty('signingKey') ?: System.getenv('SIGNING_KEY') ?: System.getenv('GPG_PRIVATE_KEY')
-        def signingPassword = rootProject.findProperty('signingPassword') ?: System.getenv('SIGNING_PASSWORD') ?: System.getenv('GPG_PASSPHRASE')
-
         if (signingKey) {
-            useInMemoryPgpKeys(signingKey.toString(), signingPassword?.toString())
+            def decodedSigningKey = new String(Base64.mimeDecoder.decode(signingKey.toString()), "UTF-8")
+
+            if (!decodedSigningKey.startsWith("-----BEGIN PGP PRIVATE KEY BLOCK-----")) {
+                throw new GradleException("signingKey is not base64 of an armored private key")
+            }
+
+            useInMemoryPgpKeys(decodedSigningKey, signingPassword?.toString())
         }
 
         required {
@@ -249,7 +253,6 @@ project(':bom') {
     apply plugin: 'java-platform'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
-    apply plugin: 'tech.yanand.maven-central-publish'
 
     javaPlatform {
         allowDependencies()
@@ -261,12 +264,6 @@ project(':bom') {
                 api project(projectPath)
             }
         }
-    }
-
-    mavenCentral {
-        repoDir = rootProject.layout.buildDirectory.dir('repos/central-bundles')
-        authToken = System.getenv('CENTRAL_MAVEN_TOKEN') ?: ''
-        publishingType = 'USER_MANAGED'
     }
 
     publishing {
@@ -286,11 +283,14 @@ project(':bom') {
     }
 
     signing {
-        def signingKey = rootProject.findProperty('signingKey') ?: System.getenv('SIGNING_KEY') ?: System.getenv('GPG_PRIVATE_KEY')
-        def signingPassword = rootProject.findProperty('signingPassword') ?: System.getenv('SIGNING_PASSWORD') ?: System.getenv('GPG_PASSPHRASE')
-
         if (signingKey) {
-            useInMemoryPgpKeys(signingKey.toString(), signingPassword?.toString())
+            def decodedSigningKey = new String(Base64.mimeDecoder.decode(signingKey.toString()), "UTF-8")
+
+            if (!decodedSigningKey.startsWith("-----BEGIN PGP PRIVATE KEY BLOCK-----")) {
+                throw new GradleException("signingKey is not base64 of an armored private key")
+            }
+
+            useInMemoryPgpKeys(decodedSigningKey, signingPassword?.toString())
         }
 
         required {
@@ -315,9 +315,7 @@ tasks.register('publishAllToCentralBundle') {
 tasks.register('publishAllToMavenCentralPortal') {
     group = 'publishing'
     description = 'Uploads every Anvil publication bundle to Maven Central Portal.'
-    dependsOn((rootProject.ext.anvilJavaProjects + [':bom']).collect {
-        "${it}:publishToMavenCentralPortal"
-    })
+    dependsOn(tasks.named('publishToMavenCentralPortal'))
 }
 
 tasks.register('publishAllToMavenLocal') {
@@ -326,4 +324,8 @@ tasks.register('publishAllToMavenLocal') {
     dependsOn((rootProject.ext.anvilJavaProjects + [':bom']).collect {
         "${it}:publishToMavenLocal"
     })
+}
+
+tasks.named('zipBundleForUpload') {
+    dependsOn(tasks.named('publishAllToCentralBundle'))
 }
