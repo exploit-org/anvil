@@ -54,9 +54,9 @@ same combined format. The key length is checked against
 
 ## Runtime
 
-The module uses libsodium through Java FFM bindings. The loader tries
-`System.loadLibrary("sodium")`, `System.loadLibrary("libsodium")`, and then a
-bundled `natives/{os}-{arch}/` resource if present.
+The module uses libsodium through Java FFM bindings. The loader tries a bundled
+`natives/{os}-{arch}/` resource first, then falls back to
+`System.loadLibrary("sodium")` and `System.loadLibrary("libsodium")`.
 
 Applications that use this module through the class path should launch with:
 

@@ -63,8 +63,8 @@ signature arrays.
 ## Runtime
 
 The module uses libsecp256k1 through Java FFM bindings. `LibSecp256k1.load()`
-tries `System.loadLibrary("secp256k1")` first and then a bundled
-`natives/{os}-{arch}/` resource if present.
+tries a bundled `natives/{os}-{arch}/` resource first, then falls back to
+`System.loadLibrary("secp256k1")`.
 
 Applications that use this module through the class path should launch with:
 

@@ -70,9 +70,9 @@ helpers where the wrapper implements them.
 
 ## Runtime
 
-`LibGMP.load()` is called by `BigInt` static initialization. The loader tries
-`System.loadLibrary("gmp")` first and then a bundled resource path under
-`natives/{os}-{arch}/` if present.
+`LibGMP.load()` is called by `BigInt` static initialization. The loader tries a
+bundled resource path under `natives/{os}-{arch}/` first, then falls back to
+`System.loadLibrary("gmp")`.
 
 Applications that use this module through the class path should launch with:
 

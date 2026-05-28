@@ -58,8 +58,8 @@ the application class path:
 java --enable-native-access=ALL-UNNAMED ...
 ```
 
-Native-backed modules load their system library first and then try bundled
-resources under `natives/{os}-{arch}/` if present in the runtime class path.
+Native-backed modules load bundled resources under `natives/{os}-{arch}/` first
+if present in the runtime class path, then fall back to system libraries.
 
 Native library names used by the loaders:
 
