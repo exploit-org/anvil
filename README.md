@@ -8,8 +8,8 @@ threshold protocol layer so applications can depend only on the pieces they use.
 
 Anvil is a continuation of
 [tss4j](https://github.com/tkeeper-org/tss4j) under Java 25 and is part of the
-TKeeper Java 25 API transition. It is intended to be used in TKeeper and other
-exploit.org products.
+[TKeeper](https://github.com/tkeeper-org/tkeeper) Java 25 API transition. It is intended to be used in TKeeper and other
+[exploit.org](https://exploit.org) products.
 
 Java packages currently use the existing `org.exploit.*` namespaces. Maven
 coordinates use `org.exploit.anvil:{artifact}:{version}`.
@@ -19,7 +19,7 @@ coordinates use `org.exploit.anvil:{artifact}:{version}`.
 Current project version:
 
 ```text
-0.1.0
+0.1.2
 ```
 
 Gradle usage with the BOM:
@@ -98,4 +98,4 @@ Loader resource tags are formed from `linux`, `macos`, or `windows` plus
 
 ## License
 
-Apache License 2.0.
+[Apache License 2.0](LICENSE.md)
