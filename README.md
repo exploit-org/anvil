@@ -26,7 +26,7 @@ Gradle usage with the BOM:
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.0")
+    implementation platform("org.exploit.anvil:bom:0.1.2")
 
     implementation "org.exploit.anvil:ecc-secp256k1"
     implementation "org.exploit.anvil:paillier"
@@ -37,8 +37,8 @@ Gradle usage without the BOM:
 
 ```groovy
 dependencies {
-    implementation "org.exploit.anvil:ecc-secp256k1:0.1.0"
-    implementation "org.exploit.anvil:paillier:0.1.0"
+    implementation "org.exploit.anvil:ecc-secp256k1:0.1.2"
+    implementation "org.exploit.anvil:paillier:0.1.2"
 }
 ```
 

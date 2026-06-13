@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:ecc-spi:0.1.0
+org.exploit.anvil:ecc-spi:0.1.2
 ```
 
 Java packages:
@@ -31,7 +31,7 @@ threshold protocols, and zero-knowledge proof modules.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.0")
+    implementation platform("org.exploit.anvil:bom:0.1.2")
     implementation "org.exploit.anvil:ecc-spi"
 }
 ```

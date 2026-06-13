@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:util:0.1.0
+org.exploit.anvil:util:0.1.2
 ```
 
 Java package:
@@ -30,7 +30,7 @@ where concatenation alone is ambiguous.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.0")
+    implementation platform("org.exploit.anvil:bom:0.1.2")
     implementation "org.exploit.anvil:util"
 }
 ```

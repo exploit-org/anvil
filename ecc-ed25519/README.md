@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:ecc-ed25519:0.1.0
+org.exploit.anvil:ecc-ed25519:0.1.2
 ```
 
 Java package:
@@ -29,7 +29,7 @@ operations, EdDSA signatures, and direct libsodium-backed Ed25519 operations.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.0")
+    implementation platform("org.exploit.anvil:bom:0.1.2")
     implementation "org.exploit.anvil:ecc-ed25519"
 }
 ```

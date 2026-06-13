@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:shamir:0.1.0
+org.exploit.anvil:shamir:0.1.2
 ```
 
 Java package:
@@ -27,7 +27,7 @@ scalars over a caller-supplied curve order and generator.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.0")
+    implementation platform("org.exploit.anvil:bom:0.1.2")
     implementation "org.exploit.anvil:shamir"
     implementation "org.exploit.anvil:ecc-secp256k1"
 }
