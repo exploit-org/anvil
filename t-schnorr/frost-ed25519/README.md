@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:frost-ed25519:0.1.2
+org.exploit.anvil:frost-ed25519:0.2.0-SNAPSHOT
 ```
 
 Java package:
@@ -26,7 +26,7 @@ SHA-512 cipher suite.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
     implementation "org.exploit.anvil:frost-ed25519"
 }
 ```

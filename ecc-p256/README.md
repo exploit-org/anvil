@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:ecc-p256:0.1.2
+org.exploit.anvil:ecc-p256:0.2.0-SNAPSHOT
 ```
 
 Java package:
@@ -30,7 +30,7 @@ support, and XMD:SHA-256 hash-to-curve mapping.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
     implementation "org.exploit.anvil:ecc-p256"
 }
 ```

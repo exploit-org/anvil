@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:t-mldsa:0.1.2
+org.exploit.anvil:t-mldsa:0.2.0-SNAPSHOT
 ```
 
 Java package:
@@ -31,7 +31,7 @@ protocol-agnostic `crypto-spi` asymmetric contracts.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
     implementation "org.exploit.anvil:t-mldsa"
 }
 ```

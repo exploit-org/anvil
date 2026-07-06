@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:crypto-spi:0.1.2
+org.exploit.anvil:crypto-spi:0.2.0-SNAPSHOT
 ```
 
 Java packages:
@@ -28,7 +28,7 @@ by concrete signature and key modules.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
     implementation "org.exploit.anvil:crypto-spi"
 }
 ```

@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:zk-dlog:0.1.2
+org.exploit.anvil:zk-dlog:0.2.0-SNAPSHOT
 ```
 
 Java package:
@@ -27,7 +27,7 @@ interface: Pedersen commitments, Chaum-Pedersen proofs, and DLEQ proofs.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
     implementation "org.exploit.anvil:zk-dlog"
     implementation "org.exploit.anvil:ecc-secp256k1"
 }

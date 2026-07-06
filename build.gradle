@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.exploit.anvil'
-version = findProperty('releaseVersion') ?: '0.1.2'
+version = findProperty('releaseVersion') ?: '0.2.0-SNAPSHOT'
 
 def firstPropertyOrEnv = { List<String> propertyNames, List<String> envNames ->
     for (def propertyName : propertyNames) {

@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:ecc-spi:0.1.2
+org.exploit.anvil:ecc-spi:0.2.0-SNAPSHOT
 ```
 
 Java packages:
@@ -33,7 +33,7 @@ interfaces extend those base contracts.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
     implementation "org.exploit.anvil:ecc-spi"
 }
 ```
