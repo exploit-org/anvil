@@ -12,6 +12,7 @@ ext {
     anvilJavaProjects = [
             ':bigint',
             ':util',
+            ':crypto-spi',
             ':ecc-spi',
             ':ecc-secp256k1',
             ':ecc-ed25519',
@@ -51,6 +52,10 @@ ext {
             ':util'                      : [
                     name       : 'Anvil Util',
                     description: 'Shared byte encoding and digest helpers for Anvil modules.'
+            ],
+            ':crypto-spi'                : [
+                    name       : 'Anvil Crypto SPI',
+                    description: 'Protocol-agnostic asymmetric key and signature interfaces for Anvil modules.'
             ],
             ':ecc-spi'                   : [
                     name       : 'Anvil ECC SPI',

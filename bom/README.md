@@ -33,6 +33,7 @@ The platform constrains:
 ```text
 bigint
 util
+crypto-spi
 ecc-spi
 ecc-secp256k1
 ecc-ed25519

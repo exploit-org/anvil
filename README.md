@@ -80,6 +80,7 @@ Loader resource tags are formed from `linux`, `macos`, or `windows` plus
 | `bom` | `:bom` | none | Java platform BOM for Anvil artifact alignment. |
 | `bigint` | `:bigint` | `org.exploit.bigint` | GMP-backed arbitrary precision integers, CSPRNG access, prime and Blum-prime generation. |
 | `util` | `:util` | `org.exploit.anvil.util` | Shared byte encoding and message digest helpers. |
+| `crypto-spi` | `:crypto-spi` | `org.exploit.crypto.spi` | Protocol-agnostic asymmetric key, key factory, signature, signer, and verifier interfaces. |
 | `ecc-spi` | `:ecc-spi` | `org.exploit.ecc.spi`, `org.exploit.ecc.util` | Curve, key, point, signer, verifier, signature, and hash-to-curve interfaces. |
 | `ecc-secp256k1` | `:ecc-secp256k1` | `org.exploit.ecc.secp256k1` | secp256k1 keys, point operations, ECDSA, recoverable ECDSA, BIP340, Taproot helpers, hash-to-curve. |
 | `ecc-ed25519` | `:ecc-ed25519` | `org.exploit.ecc.ed25519` | Ed25519 keys, point operations, EdDSA signing and verification. |
