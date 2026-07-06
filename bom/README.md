@@ -46,6 +46,7 @@ frost-secp256k1
 frost-p256
 t-ecdsa
 t-ecies
+t-mldsa
 xchacha20-poly1305
 zk-dlog
 zk-spi

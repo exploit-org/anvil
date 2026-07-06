@@ -25,6 +25,7 @@ ext {
             ':t-schnorr:frost-p256',
             ':t-ecdsa',
             ':t-ecies',
+            ':t-mldsa',
             ':xchacha20-poly1305',
             ':zk-dlog',
             ':zk-spi'
@@ -104,6 +105,10 @@ ext {
             ':t-ecies'                   : [
                     name       : 'Anvil Threshold ECIES',
                     description: 'Threshold ECIES client, ElGamal KEM, partial decryption, and symmetric cipher adapters.'
+            ],
+            ':t-mldsa'                   : [
+                    name       : 'Anvil Threshold ML-DSA',
+                    description: 'Threshold ML-DSA key generation, signing, combining, and verification utilities.'
             ],
             ':xchacha20-poly1305'        : [
                     name       : 'Anvil XChaCha20-Poly1305',

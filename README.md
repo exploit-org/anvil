@@ -93,6 +93,7 @@ Loader resource tags are formed from `linux`, `macos`, or `windows` plus
 | `frost-p256` | `:t-schnorr:frost-p256` | `org.exploit.tss.frost.p256` | FROST P-256 scheme and SHA-256 cipher suite. |
 | `t-ecdsa` | `:t-ecdsa` | `org.exploit.tss.gg20` | GG20 threshold ECDSA client, contexts, MtA runners, commitments, integrity checks, and partial signature aggregation. |
 | `t-ecies` | `:t-ecies` | `org.exploit.ecies` | Threshold ECIES client, ElGamal KEM, partial decrypt flow, AES-GCM and ChaCha20-Poly1305 ciphers. |
+| `t-mldsa` | `:t-mldsa` | `org.exploit.mldsa` | Threshold ML-DSA key generation, signing, combining, and verification utilities. |
 | `xchacha20-poly1305` | `:xchacha20-poly1305` | `org.exploit.crypto.aead` | XChaCha20-Poly1305 AEAD wrapper over libsodium. |
 | `zk-spi` | `:zk-spi` | `org.exploit.crypto.zk` | Proof, prover, verifier, statement, and witness interfaces. |
 | `zk-dlog` | `:zk-dlog` | `org.exploit.crypto.zk.dlog` | Discrete-log proof utilities: Pedersen commitments, Chaum-Pedersen, and DLEQ. |
