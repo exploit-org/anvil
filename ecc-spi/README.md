@@ -14,7 +14,9 @@ org.exploit.ecc.util
 ```
 
 `ecc-spi` defines the common elliptic-curve interfaces shared by curve modules,
-threshold protocols, and zero-knowledge proof modules.
+threshold protocols, and zero-knowledge proof modules. Protocol-agnostic
+asymmetric key and signature contracts live in `crypto-spi`; EC-specific
+interfaces extend those base contracts.
 
 ## Primary API
 
