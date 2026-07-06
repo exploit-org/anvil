@@ -28,7 +28,7 @@ symmetric cipher adapters.
 | Ciphertext | `CipherText`, `EncryptionResult` |
 | Symmetric ciphers | `SymmetricCipher`, `AesGcmCipher`, `ChaCha20Poly1305Cipher` |
 | KDF | `HKDF` |
-| Abort | `DleqIdentifiableAbortException` |
+| Abort | `IdentifiableAbortException` |
 
 ## Usage
 
