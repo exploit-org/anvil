@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:paillier:0.2.0-SNAPSHOT
+org.exploit.anvil:paillier:0.2.0
 ```
 
 Java package:
@@ -31,7 +31,7 @@ tracking, MtA helper flows, and Paillier-related zero-knowledge proof types.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
+    implementation platform("org.exploit.anvil:bom:0.2.0")
     implementation "org.exploit.anvil:paillier"
 }
 ```

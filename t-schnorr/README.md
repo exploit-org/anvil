@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:t-schnorr:0.2.0-SNAPSHOT
+org.exploit.anvil:t-schnorr:0.2.0
 ```
 
 Java package:
@@ -32,7 +32,7 @@ specific schemes live in the nested modules.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
+    implementation platform("org.exploit.anvil:bom:0.2.0")
     implementation "org.exploit.anvil:t-schnorr"
     implementation "org.exploit.anvil:frost-secp256k1"
 }
