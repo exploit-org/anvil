@@ -19,14 +19,14 @@ coordinates use `org.exploit.anvil:{artifact}:{version}`.
 Current project version:
 
 ```text
-0.1.2
+0.2.0-SNAPSHOT
 ```
 
 Gradle usage with the BOM:
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
 
     implementation "org.exploit.anvil:ecc-secp256k1"
     implementation "org.exploit.anvil:paillier"
@@ -37,8 +37,8 @@ Gradle usage without the BOM:
 
 ```groovy
 dependencies {
-    implementation "org.exploit.anvil:ecc-secp256k1:0.1.2"
-    implementation "org.exploit.anvil:paillier:0.1.2"
+    implementation "org.exploit.anvil:ecc-secp256k1:0.2.0-SNAPSHOT"
+    implementation "org.exploit.anvil:paillier:0.2.0-SNAPSHOT"
 }
 ```
 
@@ -80,6 +80,7 @@ Loader resource tags are formed from `linux`, `macos`, or `windows` plus
 | `bom` | `:bom` | none | Java platform BOM for Anvil artifact alignment. |
 | `bigint` | `:bigint` | `org.exploit.bigint` | GMP-backed arbitrary precision integers, CSPRNG access, prime and Blum-prime generation. |
 | `util` | `:util` | `org.exploit.anvil.util` | Shared byte encoding and message digest helpers. |
+| `crypto-spi` | `:crypto-spi` | `org.exploit.crypto.spi` | Protocol-agnostic asymmetric key, key factory, signature, signer, and verifier interfaces. |
 | `ecc-spi` | `:ecc-spi` | `org.exploit.ecc.spi`, `org.exploit.ecc.util` | Curve, key, point, signer, verifier, signature, and hash-to-curve interfaces. |
 | `ecc-secp256k1` | `:ecc-secp256k1` | `org.exploit.ecc.secp256k1` | secp256k1 keys, point operations, ECDSA, recoverable ECDSA, BIP340, Taproot helpers, hash-to-curve. |
 | `ecc-ed25519` | `:ecc-ed25519` | `org.exploit.ecc.ed25519` | Ed25519 keys, point operations, EdDSA signing and verification. |
@@ -92,6 +93,7 @@ Loader resource tags are formed from `linux`, `macos`, or `windows` plus
 | `frost-p256` | `:t-schnorr:frost-p256` | `org.exploit.tss.frost.p256` | FROST P-256 scheme and SHA-256 cipher suite. |
 | `t-ecdsa` | `:t-ecdsa` | `org.exploit.tss.gg20` | GG20 threshold ECDSA client, contexts, MtA runners, commitments, integrity checks, and partial signature aggregation. |
 | `t-ecies` | `:t-ecies` | `org.exploit.ecies` | Threshold ECIES client, ElGamal KEM, partial decrypt flow, AES-GCM and ChaCha20-Poly1305 ciphers. |
+| `t-mldsa` | `:t-mldsa` | `org.exploit.mldsa` | Threshold ML-DSA key generation, signing, combining, and verification utilities. |
 | `xchacha20-poly1305` | `:xchacha20-poly1305` | `org.exploit.crypto.aead` | XChaCha20-Poly1305 AEAD wrapper over libsodium. |
 | `zk-spi` | `:zk-spi` | `org.exploit.crypto.zk` | Proof, prover, verifier, statement, and witness interfaces. |
 | `zk-dlog` | `:zk-dlog` | `org.exploit.crypto.zk.dlog` | Discrete-log proof utilities: Pedersen commitments, Chaum-Pedersen, and DLEQ. |

@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:t-ecdsa:0.1.2
+org.exploit.anvil:t-ecdsa:0.2.0-SNAPSHOT
 ```
 
 Java package:
@@ -26,13 +26,13 @@ checks, partial signature calculation, and signature aggregation.
 | Commitments | `GG20CommitmentGenerator`, `CommitmentResult`, `GammaCommitment`, `ChaumPedersenCommitment`, `ChaumPedersenCommitmentWithValue` |
 | MtA | `MtAProtocolRunner`, `MtAInitiatorProtocolRunner`, `MtARespondentProtocolRunner` |
 | Signing | `PartialSignatureCalculator`, `SignaturePartAggregator`, `SignatureBuilder` |
-| Integrity | `IntegrityChecker`, `GG20IdentifiableAbortException` |
+| Integrity | `IntegrityChecker`, `IdentifiableAbortException` |
 
 ## Usage
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
     implementation "org.exploit.anvil:t-ecdsa"
     implementation "org.exploit.anvil:ecc-secp256k1"
 }
@@ -60,7 +60,7 @@ The module exposes protocol state through context interfaces and Java model
 types. It does not define a network transport. Integrations are expected to
 persist and exchange the message objects required by each GG20 phase.
 
-`GG20IdentifiableAbortException` carries a participant id for aborts where the
+`IdentifiableAbortException` carries a participant id for aborts where the
 code can identify the peer.
 
 ## Dependencies

@@ -1,17 +1,54 @@
-import java.util.Base64
-
 plugins {
     id 'base'
     id 'tech.yanand.maven-central-publish' version '1.2.0'
 }
 
 group = 'org.exploit.anvil'
-version = findProperty('releaseVersion') ?: '0.1.2'
+version = findProperty('releaseVersion') ?: '0.2.0'
+
+def firstPropertyOrEnv = { List<String> propertyNames, List<String> envNames ->
+    for (def propertyName : propertyNames) {
+        def value = findProperty(propertyName)
+        if (value != null && !value.toString().isBlank())
+            return value.toString()
+    }
+
+    for (def envName : envNames) {
+        def value = System.getenv(envName)
+        if (value != null && !value.isBlank())
+            return value
+    }
+
+    return null
+}
+
+def splitBasicAuthToken = { token ->
+    if (token == null || token.toString().isBlank())
+        return null
+
+    def value = token.toString()
+    if (!value.contains(':')) {
+        try {
+            value = new String(Base64.decoder.decode(value), java.nio.charset.StandardCharsets.UTF_8)
+        } catch (IllegalArgumentException ignored) {
+            return null
+        }
+    }
+
+    def separator = value.indexOf(':')
+    if (separator <= 0 || separator == value.length() - 1)
+        return null
+
+    return [value.substring(0, separator), value.substring(separator + 1)]
+}
+
+def centralMavenBasicCredentials = splitBasicAuthToken(findProperty('centralMavenToken'))
 
 ext {
     anvilJavaProjects = [
             ':bigint',
             ':util',
+            ':crypto-spi',
             ':ecc-spi',
             ':ecc-secp256k1',
             ':ecc-ed25519',
@@ -24,6 +61,7 @@ ext {
             ':t-schnorr:frost-p256',
             ':t-ecdsa',
             ':t-ecies',
+            ':t-mldsa',
             ':xchacha20-poly1305',
             ':zk-dlog',
             ':zk-spi'
@@ -42,6 +80,18 @@ ext {
     anvilDeveloperId = findProperty('pomDeveloperId') ?: 'xlloit'
     anvilDeveloperName = findProperty('pomDeveloperName') ?: 'xlloit'
     anvilDeveloperEmail = findProperty('pomDeveloperEmail') ?: 'contact@exploit.org'
+    anvilSnapshotRepositoryUrl = firstPropertyOrEnv(
+            ['snapshotRepositoryUrl', 'mavenCentralSnapshotRepositoryUrl'],
+            ['SNAPSHOT_REPOSITORY_URL', 'MAVEN_CENTRAL_SNAPSHOT_REPOSITORY_URL']
+    ) ?: 'https://central.sonatype.com/repository/maven-snapshots/'
+    anvilSnapshotRepositoryUsername = firstPropertyOrEnv(
+            ['snapshotRepositoryUsername', 'mavenCentralUsername', 'centralMavenUsername', 'centralUsername', 'sonatypeUsername'],
+            ['SNAPSHOT_REPOSITORY_USERNAME', 'MAVEN_CENTRAL_USERNAME', 'CENTRAL_MAVEN_USERNAME', 'CENTRAL_USERNAME', 'SONATYPE_USERNAME']
+    ) ?: centralMavenBasicCredentials?.get(0)
+    anvilSnapshotRepositoryPassword = firstPropertyOrEnv(
+            ['snapshotRepositoryPassword', 'mavenCentralPassword', 'centralMavenPassword', 'centralPassword', 'sonatypePassword'],
+            ['SNAPSHOT_REPOSITORY_PASSWORD', 'MAVEN_CENTRAL_PASSWORD', 'CENTRAL_MAVEN_PASSWORD', 'CENTRAL_PASSWORD', 'SONATYPE_PASSWORD']
+    ) ?: centralMavenBasicCredentials?.get(1)
 
     anvilProjectPom = [
             ':bigint'                    : [
@@ -51,6 +101,10 @@ ext {
             ':util'                      : [
                     name       : 'Anvil Util',
                     description: 'Shared byte encoding and digest helpers for Anvil modules.'
+            ],
+            ':crypto-spi'                : [
+                    name       : 'Anvil Crypto SPI',
+                    description: 'Protocol-agnostic asymmetric key and signature interfaces for Anvil modules.'
             ],
             ':ecc-spi'                   : [
                     name       : 'Anvil ECC SPI',
@@ -99,6 +153,10 @@ ext {
             ':t-ecies'                   : [
                     name       : 'Anvil Threshold ECIES',
                     description: 'Threshold ECIES client, ElGamal KEM, partial decryption, and symmetric cipher adapters.'
+            ],
+            ':t-mldsa'                   : [
+                    name       : 'Anvil Threshold ML-DSA',
+                    description: 'Threshold ML-DSA key generation, signing, combining, and verification utilities.'
             ],
             ':xchacha20-poly1305'        : [
                     name       : 'Anvil XChaCha20-Poly1305',
@@ -154,10 +212,43 @@ def configurePom = { MavenPublication publication, Project p ->
     }
 }
 
+def configureMavenCentralSnapshotRepository = { repository ->
+    repository.name = 'MavenCentralSnapshots'
+    repository.url = rootProject.uri(rootProject.ext.anvilSnapshotRepositoryUrl)
+    repository.mavenContent {
+        snapshotsOnly()
+    }
+
+    if (rootProject.ext.anvilSnapshotRepositoryUsername && rootProject.ext.anvilSnapshotRepositoryPassword) {
+        repository.credentials {
+            username = rootProject.ext.anvilSnapshotRepositoryUsername.toString()
+            password = rootProject.ext.anvilSnapshotRepositoryPassword.toString()
+        }
+    }
+}
+
 mavenCentral {
     repoDir = layout.buildDirectory.dir('repos/central-bundles')
     authToken = centralMavenToken
     publishingType = 'USER_MANAGED'
+}
+
+tasks.register('validateMavenCentralSnapshotPublication') {
+    group = 'publishing'
+    description = 'Validates Maven Central snapshot publishing configuration.'
+
+    doLast {
+        if (!version.toString().endsWith('-SNAPSHOT')) {
+            throw new GradleException("Snapshot publication requires -PreleaseVersion=<version>-SNAPSHOT; current version is ${version}.")
+        }
+
+        if (!rootProject.ext.anvilSnapshotRepositoryUsername || !rootProject.ext.anvilSnapshotRepositoryPassword) {
+            throw new GradleException(
+                    'Missing Maven Central snapshot credentials. Set snapshotRepositoryUsername/snapshotRepositoryPassword ' +
+                            'or compatible Maven Central/Sonatype username/password properties or environment variables.'
+            )
+        }
+    }
 }
 
 allprojects {
@@ -224,7 +315,15 @@ configure(rootProject.ext.anvilJavaProjects.collect { project(it) }) {
                 name = 'CentralBundle'
                 url = rootProject.layout.buildDirectory.dir('repos/central-bundles')
             }
+            maven(configureMavenCentralSnapshotRepository)
         }
+    }
+
+    tasks.matching {
+        it.name == 'publishAllPublicationsToMavenCentralSnapshotsRepository' ||
+                it.name == 'publishMavenPublicationToMavenCentralSnapshotsRepository'
+    }.configureEach {
+        dependsOn rootProject.tasks.named('validateMavenCentralSnapshotPublication')
     }
 
     signing {
@@ -279,7 +378,15 @@ project(':bom') {
                 name = 'CentralBundle'
                 url = rootProject.layout.buildDirectory.dir('repos/central-bundles')
             }
+            maven(configureMavenCentralSnapshotRepository)
         }
+    }
+
+    tasks.matching {
+        it.name == 'publishAllPublicationsToMavenCentralSnapshotsRepository' ||
+                it.name == 'publishMavenPublicationToMavenCentralSnapshotsRepository'
+    }.configureEach {
+        dependsOn rootProject.tasks.named('validateMavenCentralSnapshotPublication')
     }
 
     signing {
@@ -316,6 +423,20 @@ tasks.register('publishAllToMavenCentralPortal') {
     group = 'publishing'
     description = 'Uploads every Anvil publication bundle to Maven Central Portal.'
     dependsOn(tasks.named('publishToMavenCentralPortal'))
+}
+
+tasks.register('publishAllToMavenCentralSnapshots') {
+    group = 'publishing'
+    description = 'Publishes every Anvil -SNAPSHOT publication to Maven Central Portal snapshots.'
+    dependsOn((rootProject.ext.anvilJavaProjects + [':bom']).collect {
+        "${it}:publishAllPublicationsToMavenCentralSnapshotsRepository"
+    })
+}
+
+tasks.register('publishAllToSnapshotRepository') {
+    group = 'publishing'
+    description = 'Alias for publishAllToMavenCentralSnapshots.'
+    dependsOn(tasks.named('publishAllToMavenCentralSnapshots'))
 }
 
 tasks.register('publishAllToMavenLocal') {

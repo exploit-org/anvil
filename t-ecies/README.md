@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:t-ecies:0.1.2
+org.exploit.anvil:t-ecies:0.2.0-SNAPSHOT
 ```
 
 Java package:
@@ -28,13 +28,13 @@ symmetric cipher adapters.
 | Ciphertext | `CipherText`, `EncryptionResult` |
 | Symmetric ciphers | `SymmetricCipher`, `AesGcmCipher`, `ChaCha20Poly1305Cipher` |
 | KDF | `HKDF` |
-| Abort | `DleqIdentifiableAbortException` |
+| Abort | `IdentifiableAbortException` |
 
 ## Usage
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
     implementation "org.exploit.anvil:t-ecies"
     implementation "org.exploit.anvil:ecc-p256"
 }

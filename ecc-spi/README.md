@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:ecc-spi:0.1.2
+org.exploit.anvil:ecc-spi:0.2.0-SNAPSHOT
 ```
 
 Java packages:
@@ -14,7 +14,9 @@ org.exploit.ecc.util
 ```
 
 `ecc-spi` defines the common elliptic-curve interfaces shared by curve modules,
-threshold protocols, and zero-knowledge proof modules.
+threshold protocols, and zero-knowledge proof modules. Protocol-agnostic
+asymmetric key and signature contracts live in `crypto-spi`; EC-specific
+interfaces extend those base contracts.
 
 ## Primary API
 
@@ -31,7 +33,7 @@ threshold protocols, and zero-knowledge proof modules.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.1.2")
+    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
     implementation "org.exploit.anvil:ecc-spi"
 }
 ```

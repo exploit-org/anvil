@@ -1,0 +1,6 @@
+dependencies {
+    api project(':crypto-spi')
+    api project(':util')
+
+    implementation "org.bouncycastle:bcprov-jdk18on:${rootProject.ext.bouncyCastleVersion}"
+}
