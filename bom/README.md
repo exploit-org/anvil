@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:bom:0.2.0-SNAPSHOT
+org.exploit.anvil:bom:0.2.0
 ```
 
 The BOM is a Gradle `java-platform` artifact that constrains every published
@@ -14,7 +14,7 @@ not Java classes.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.2.0-SNAPSHOT")
+    implementation platform("org.exploit.anvil:bom:0.2.0")
 
     implementation "org.exploit.anvil:bigint"
     implementation "org.exploit.anvil:ecc-secp256k1"
