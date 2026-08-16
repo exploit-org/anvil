@@ -1,9 +1,9 @@
 # Security
 
-If you found a security issue in TKeeper, please report it privately.
+If you found a security issue in Anvil, please report it privately.
 
 ## Report
-Email: [security@exploit.org](mailto:security@tkeeper.org)\
+Email: [security@exploit.org](mailto:security@exploit.org)\
 Subject: [Anvil Security] <short summary>
 
 Please **DON'T** open a public GitHub issue for security reports.

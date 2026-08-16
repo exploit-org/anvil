@@ -38,11 +38,7 @@ If you can provide a minimal failing test, even better.
 
 ## Commit messages
 
-Use clear messages. Conventional Commits are recommended:
-- `fix: ...`
-- `feat: ...`
-- `chore(deps): ...`
-- `test: ...`
+Use short, clear commit messages that describe the change. Prefixes such as `feat:`, `fix:`, or `chore:` are not required.
 
 ## Pull requests
 
