@@ -229,7 +229,7 @@ def configureMavenCentralSnapshotRepository = { repository ->
 
 mavenCentral {
     repoDir = layout.buildDirectory.dir('repos/central-bundles')
-    authToken = centralMavenToken
+    authToken = project.providers.gradleProperty('centralMavenToken')
     publishingType = 'USER_MANAGED'
 }
 
@@ -259,6 +259,9 @@ allprojects {
         mavenCentral()
     }
 }
+
+def signingKey = findProperty('signingKey')
+def signingPassword = findProperty('signingPassword')
 
 configure(rootProject.ext.anvilJavaProjects.collect { project(it) }) {
     apply plugin: 'java-library'
