@@ -24,7 +24,7 @@ checks, partial signature calculation, and signature aggregation.
 | Context | `GG20Context`, `CryptoContext`, `InitContext`, `MtAContext`, `SignatureContext`, `IntegrityContext`, `SignatureAggregatorContext` |
 | In-memory contexts | `InMemoryCryptoContext`, `InMemoryInitContext`, `InMemoryMtAInitiatorContext`, `InMemoryMtARespondentContext`, `InMemorySignatureContext`, `InMemoryIntegrityContext`, `InMemoryAggregatorContext` |
 | Commitments | `GG20CommitmentGenerator`, `CommitmentResult`, `GammaCommitment`, `ChaumPedersenCommitment`, `ChaumPedersenCommitmentWithValue` |
-| MtA | `MtAProtocolRunner`, `MtAInitiatorProtocolRunner`, `MtARespondentProtocolRunner` |
+| MtA | `MtAProtocolRunner`, `MtAInitiatorProtocolRunner`, `MtARespondentProtocolRunner`, `MtAResponse` |
 | Signing | `PartialSignatureCalculator`, `SignaturePartAggregator`, `SignatureBuilder` |
 | Integrity | `IntegrityChecker`, `IdentifiableAbortException` |
 
@@ -62,6 +62,37 @@ persist and exchange the message objects required by each GG20 phase.
 
 `IdentifiableAbortException` carries a participant id for aborts where the
 code can identify the peer.
+
+When a phase needs both respondent operations, use
+`client.mta().asRespondent().respond(initiatorId, publicKey, message)`.
+It verifies the initiator's range, BiPrime, and NoSmallFactor proofs once for
+this request, then returns `MtAResponse.gamma()` and `MtAResponse.lagrange()`.
+Each operation generates its own mask and encryption randomness. The additive
+shares are stored together only after both operations succeed. Verification
+results are not cached between requests.
+
+The existing `compute(type, initiatorId, publicKey, message)` API still verifies
+each request independently. Custom `MtARespondentContext` implementations must
+implement atomic `storeShares` to use `respond`; its default implementation
+rejects the operation without storing shares.
+
+The default in-memory crypto context generates local auxiliary CRT secrets for
+incoming proof verification. Only `crypto().zkSetup()` is exchanged with peers;
+`crypto().zkSetupSecrets()` must remain local and must never be serialized.
+An explicitly supplied public-only `ZKSetup` continues to work without CRT.
+
+After all MtA responses have been produced and all received GAMMA/LAGRANGE
+results have been verified and stored, stop accepting MtA work and call
+`client.context().crypto().destroyZKSetupSecrets()`. This destroys the native
+factor/inverse buffers while preserving the public setup. The call waits for
+active CRT operations. `client.close()` also destroys these secrets on success,
+abort, or timeout. Borrowed CRT verifiers reject use after destruction.
+
+For TKeeper, the coordinator completes the MtA round before collecting the
+offline phase. The early-erasure call belongs immediately after
+`GG20OfflinePhaseHandler.broadcast` enters the offline phase, once that MtA
+round has completed successfully. Do not erase on the first received MtA result
+or an incoming offline message: other MtA calls may still be active.
 
 ## Dependencies
 
