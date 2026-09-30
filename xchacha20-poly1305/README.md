@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:xchacha20-poly1305:0.2.0
+org.exploit.anvil:xchacha20-poly1305:0.3.0
 ```
 
 Java package:
@@ -26,7 +26,7 @@ XChaCha20-Poly1305 implementation.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.2.0")
+    implementation platform("org.exploit.anvil:bom:0.3.0")
     implementation "org.exploit.anvil:xchacha20-poly1305"
 }
 ```

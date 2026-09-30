@@ -19,14 +19,14 @@ coordinates use `org.exploit.anvil:{artifact}:{version}`.
 Current project version:
 
 ```text
-0.2.0
+0.3.0
 ```
 
 Gradle usage with the BOM:
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.2.0")
+    implementation platform("org.exploit.anvil:bom:0.3.0")
 
     implementation "org.exploit.anvil:ecc-secp256k1"
     implementation "org.exploit.anvil:paillier"
@@ -37,8 +37,8 @@ Gradle usage without the BOM:
 
 ```groovy
 dependencies {
-    implementation "org.exploit.anvil:ecc-secp256k1:0.2.0"
-    implementation "org.exploit.anvil:paillier:0.2.0"
+    implementation "org.exploit.anvil:ecc-secp256k1:0.3.0"
+    implementation "org.exploit.anvil:paillier:0.3.0"
 }
 ```
 
