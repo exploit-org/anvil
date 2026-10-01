@@ -3,7 +3,7 @@
 Coordinates:
 
 ```text
-org.exploit.anvil:frost-secp256k1:0.3.0
+org.exploit.anvil:frost-secp256k1:0.3.1
 ```
 
 Java package:
@@ -29,7 +29,7 @@ tweaked BIP340 signatures.
 
 ```groovy
 dependencies {
-    implementation platform("org.exploit.anvil:bom:0.3.0")
+    implementation platform("org.exploit.anvil:bom:0.3.1")
     implementation "org.exploit.anvil:frost-secp256k1"
 }
 ```
