@@ -68,6 +68,14 @@ destroy, close, isDestroyed
 Methods with `Sec` in the name call GMP secure-operation variants or secure
 helpers where the wrapper implements them.
 
+`BigInt.CrtModPow` reuses copied CRT parameters for coprime odd moduli.
+`forPrimes(p, q, inverse)` additionally reduces long exponents modulo `p-1`
+and `q-1` through GMP secure primitives. The caller must supply actual distinct
+odd primes, a valid `p^-1 mod q`, and public operand sizes. Reduced exponents
+use fixed factor limb widths. The ordinary constructor also supports composite
+moduli and does not apply this reduction. Close a context only after every
+concurrent call has finished; closing wipes its private buffers.
+
 ## Runtime
 
 `LibGMP.load()` is called by `BigInt` static initialization. The loader tries a
